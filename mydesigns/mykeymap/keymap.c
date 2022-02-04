@@ -250,28 +250,16 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
   //     tap_code(KC_VOLU);
   //   }
   // }
-  uint8_t temp_mod = get_mods();
-    uint8_t temp_osm = get_oneshot_mods();
+  // uint8_t temp_mod = get_mods();
+  // uint8_t temp_osm = get_oneshot_mods();
     // bool    is_ctrl  = (temp_mod | temp_osm) & MOD_MASK_CTRL;
-    bool    is_shift = (temp_mod | temp_osm) & MOD_MASK_SHIFT;
-    if (is_shift) {
-        if (index == 0) {
-            if (clockwise) {
-                tap_code(KC_WH_R);
-            } else {
-                tap_code(KC_WH_L);
-            }
-        }
+  if (index == 0) {
+    if (clockwise) {
+	tap_code(KC_WH_D);
+    } else {
+	tap_code(KC_WH_U);
     }
-    else {
-        if (index == 0) {
-            if (clockwise) {
-                tap_code(KC_WH_D);
-            } else {
-                tap_code(KC_WH_U);
-            }
-        }
-    }
+  }
     return true;
 }
 #endif
