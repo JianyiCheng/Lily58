@@ -101,7 +101,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_LOWER] = LAYOUT(
   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,                     KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
   KC_CAPS, KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, KC_BTN1,                   _______, KC_PSCR, KC_SCRL, KC_PAUS, KC_UP,  KC_DEL,
-  KC_RCTRL,KC_VOLD, KC_VOLU, KC_MUTE, KC_EJCT, _______,      KC_PAST, KC_PSLS, KC_HOME, KC_PGUP, KC_LEFT, KC_RGHT,
+  KC_RCTRL,KC_VOLD, KC_VOLU, KC_MUTE, KC_EJCT, KC_BTN2,      KC_PAST, KC_PSLS, KC_HOME, KC_PGUP, KC_LEFT, KC_RGHT,
   KC_RSFT, S(C(KC_TAB)), C(KC_TAB), A(KC_TAB), G(KC_TAB), _______,  _______,       KC_RBRC, KC_PPLS, KC_PMNS, KC_END,  KC_PGDN, KC_DOWN, _______,
                             _______, _______, _______, _______, _______,  _______, KC_INS,  KC_STOP
 ),
@@ -250,14 +250,33 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
   //     tap_code(KC_VOLU);
   //   }
   // }
-  // uint8_t temp_mod = get_mods();
-  // uint8_t temp_osm = get_oneshot_mods();
-    // bool    is_ctrl  = (temp_mod | temp_osm) & MOD_MASK_CTRL;
+  uint8_t temp_mod = get_mods();
+  uint8_t temp_osm = get_oneshot_mods();
+  bool    is_lower  = (temp_mod | temp_osm) & MOD_BIT(MO(_LOWER));
+  bool    is_shift = (temp_mod | temp_osm) & MOD_MASK_SHIFT;
   if (index == 0) {
-    if (clockwise) {
-	tap_code(KC_WH_D);
-    } else {
-	tap_code(KC_WH_U);
+    if (is_lower) {
+      if (is_shift) {
+        if (clockwise) {
+          tap_code(KC_MS_D);
+        } else {
+          tap_code(KC_MS_U);
+        }
+      }
+      else {
+        if (clockwise) {
+          tap_code(KC_MS_R);
+        } else {
+          tap_code(KC_MS_L);
+        }
+      }
+    }
+    else {
+      if (clockwise) {
+        tap_code(KC_WH_D);
+      } else {
+        tap_code(KC_WH_U);
+      }
     }
   }
     return true;
